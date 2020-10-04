@@ -31,7 +31,7 @@ ft2m = in2m * 12; %feet to meters
 kg2N = 9.81; % Convert kg to newtons
 oz2kg = 0.0283495; % Convert ounces to kg
 
-%% =========================== Varibles and Constants ===================================== %%
+%% =========================== Variables and Constants ===================================== %%
 n = 30; % Number of test cases to run
 g = 9.81; % Accleration due to gravity in m/s^2
 
@@ -49,6 +49,7 @@ thrust_to_weight = 0.6; % Desired thrust to weight ratio
 Takeoff_velocity = 14; % Desired takeoff velocity in m/s
 CD_0 = 0.06; % Zero-lift drag coefficient guess (CFD model approximation would be better)
 e = 0.80; % Oswald efficiency factor (Need better method of approximating)
+mu = 0.02  % Takeoff distance constant
 airfoil_Cl_max = 1.46; % Maximum lift coefficient for chosen BOE103
 delta_Cl = 0.6*cosd(-10); % delta cl due to flaps: Raymer 279, 0.6 = Ratio of flapped area and total area
 Cf = 0.006; % Coefficient of skin friction (Need a serious evaluation over how feasible this is)
