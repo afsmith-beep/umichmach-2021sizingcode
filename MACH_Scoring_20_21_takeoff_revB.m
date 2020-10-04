@@ -36,7 +36,7 @@ span_wing = linspace(54, 54, n)*in2m; % Generates vector of wingspans
 sensor = linspace(1, 14, n); % Generates vector for number of sensors carried by aircraft
 [span_wing, sensor] = meshgrid(span_wing, sensor); % Creates matrix relating cases for each wingspan/sensor configuration
 
-g = 9.81; %m/s^2
+g = 9.81; % m/s^2
 num_wings = 1; %wings
 
 weight_fuselage_intial = 23;  % fuse empty weight Newtons
