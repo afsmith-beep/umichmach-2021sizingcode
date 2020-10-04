@@ -90,7 +90,7 @@ for i = 0:1000
     for k = 0:100
         weight_empty = weight_fuselage + weight_wings + weight_propulsion; %empty weight (N)
         MTOW = weight_empty + sensor .* ((sensorWeight + sensorContainer) .* g); %Max Takeoff weight (N) (pass weigh 3 oz 0.085 kg)
-%         thrust = 70;
+        % thrust = 70;
         thrust = thrust_to_weight*MTOW; %thrust (N) (weight_empty or MTOW????)
         req_prop_weight = (thrust*0.224809 -RegConst(1))/RegConst(2)*4.44822;
         err = sum(sum(abs(req_prop_weight - weight_propulsion))); %sum of absolute error
@@ -102,7 +102,7 @@ for i = 0:1000
 
         end
         
-       weight_propulsion = weight_propulsion + ...
+        weight_propulsion = weight_propulsion + ...
         0.1*((thrust*0.224809 -RegConst(1))/RegConst(2)*4.44822 - weight_propulsion) ;
 
     end
