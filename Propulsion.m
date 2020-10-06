@@ -1,8 +1,10 @@
-function [reqPropWeigh,  weightPropulsion] = Propulsion (MTOW, weightWings, weightFuselage, RegConst, AR, weightWings, thrustToWeight)
-    
+function [weightPropulsion] = Propulsion (MTOW, weightWings, weightFuselage, RegConst, AR, weightWings, thrustToWeight)
+   % Estimated weight of the electronic systems 
+   % Todo: calculate endurance based on electronic systems and battery
+   % capacity
     for k = 0:100
         thrust = thrust_to_weight*MTOW; %thrust (N) 
-        reqPropWeight = (thrust*0.224809 - RegConst(1))/RegConst(2)*4.44822; %Question: Where does 0.22.... come from?  Why is RegConst(1) subtracted?
+        reqPropWeight = (thrust*0.224809 - RegConst(1))/RegConst(2)*4.44822; 
         err = sum(sum(abs(reqPropWeight - weightPropulsion))); %sum of absolute error
         fprintf('err %f\n',err);
 
