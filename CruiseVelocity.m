@@ -10,8 +10,8 @@ T_2 = -0.015;
 v_cruise = zeros(size(sensor));
 
 for j = [1:size(sensor,1)]
-    MTOW=MTOW-1.39;
-    j;
+    MTOW=MTOW-1.39
+    j
     for i = [1:size(span_wing,2)]
         v_cruise(j,i) = double(max(vpasolve(v.^2*T_2+v*T_1+T_0(j,i) ==...
         0.5*air_density*v.^2*wing_ref_area(j,i).*(CD_0+1./(pi*e*AR(j,i))*...
