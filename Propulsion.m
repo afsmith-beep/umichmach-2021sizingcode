@@ -1,4 +1,4 @@
-function [weightPropulsion] = Propulsion (MTOW, weightWings, weightFuselage, RegConst, AR, weightWings, thrustToWeight)
+function [MTOW] = Propulsion (MTOW, weightWings, weightFuselage, RegConst, AR, weightWings, thrustToWeight)
    % Estimated weight of the electronic systems 
    % Todo: calculate endurance based on electronic systems and battery
    % capacity
@@ -18,3 +18,8 @@ function [weightPropulsion] = Propulsion (MTOW, weightWings, weightFuselage, Reg
         
        weightPropulsion = weightPropulsion + 0.1*((thrust*0.224809 -RegConst(1))/RegConst(2)*4.44822 - weightPropulsion) ;
     end
+    
+    weight_empty = weight_fuselage + weight_wings + weight_propulsion;
+    MTOW = weight_empty + sensor .* ((sensorWeight + sensorContainer) .* g); %Max Takeoff weight (N) (pass weigh 3 oz 0.085 kg)
+        % thrust = 70;
+end
