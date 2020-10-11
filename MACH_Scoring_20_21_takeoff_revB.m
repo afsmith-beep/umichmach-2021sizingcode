@@ -113,7 +113,7 @@ for i = 0:1000
 
 
     err_wing_ref_area = sum(sum(abs(wing_ref_area - wing_area_req)));
-   fprintf('err  %d  %f\n ', i, err_wing_ref_area);
+    fprintf('err  %d  %f\n ', i, err_wing_ref_area);
 
     if err_wing_ref_area < 1e-8
         fprintf('wing_ref_area converged after %d\n',i);
