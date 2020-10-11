@@ -1,4 +1,4 @@
-function [weightPropulsion,MTOW] = Propulsion (MTOW, weightWings, weightFuselage, RegConst, AR, weightWings, thrustToWeight)
+function [weightPropulsion] = Propulsion (MTOW, weightWings, weightFuselage, RegConst, AR, weightWings, thrustToWeight)
    % Estimated weight of the electronic systems 
    % Todo: calculate endurance based on electronic systems and battery
    % capacity
