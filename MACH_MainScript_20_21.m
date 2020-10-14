@@ -40,7 +40,7 @@ span_wing = 54 * in2m; % Wingspan converted from inches to meters. 2021 competit
 num_wings = 1; % Number of wings
 
 % Fuselage Properties
-weight_fuselage_intial = 23; % Empty fuselage weight guess in Newtons (Does not include wings, payloads, or propulsion system)
+weight_fuselage_initial = 23; % Empty fuselage weight guess in Newtons (Does not include wings, payloads, or propulsion system)
 weight_fuselage = weight_fuselage_initial; % Sets up place holder for fuselage weight iterations
 weight_propulsion = 18; % inital guess for Propulsion System weight in Newtons
 
@@ -49,7 +49,7 @@ thrust_to_weight = 0.6; % Desired thrust to weight ratio
 Takeoff_velocity = 14; % Desired takeoff velocity in m/s
 CD_0 = 0.06; % Zero-lift drag coefficient guess (CFD model approximation would be better)
 e = 0.80; % Oswald efficiency factor (Need better method of approximating)
-mu = 0.02  % Takeoff distance constant
+mu = 0.02;  % Takeoff distance constant
 airfoil_Cl_max = 1.46; % Maximum lift coefficient for chosen BOE103
 delta_Cl = 0.6*cosd(-10); % delta cl due to flaps: Raymer 279, 0.6 = Ratio of flapped area and total area
 Cf = 0.006; % Coefficient of skin friction (Need a serious evaluation over how feasible this is)
@@ -72,4 +72,4 @@ max_sensor_mass = 18; % Maximum sensor mass in ounces (Would be better to get a 
 min_container_mass = 6; % Minimum sensor container mass in ounces (Would be better to get a linear density plot instead)
 max_container_mass = 12; % Maximum sensor container mass in ounces (Would be better to get a linear density model)
 
-[sensor_length,sensor_weight,sensor_container_mass] = Payload(n, n_sensors,max_sensor_length, min_sensor_length,max_sensor_mass,min_sensor_mass,min_containter_mass,max_container_mass)
+[sensor_length,sensor_weight,sensor_container_mass] = Payload(n, n_sensors,max_sensor_length, min_sensor_length,max_sensor_mass,min_sensor_mass,min_container_mass,max_container_mass);
