@@ -33,7 +33,7 @@ ft2m = in2m * 12; %feet to meters
 
 n = 30; % Number of test cases 
 span_wing = linspace(54, 54, n)*in2m; % Generates vector of wingspans
-sensor = linspace(1, 14, n); % Generates vector for number of sensors carried by aircraft
+sensor = linspace(1, 10, n); % Generates vector for number of sensors carried by aircraft
 [span_wing, sensor] = meshgrid(span_wing, sensor); % Creates matrix relating cases for each wingspan/sensor configuration
 
 g = 9.81; % m/s^2
@@ -58,7 +58,7 @@ air_density = 1.12; % Tucson air density (kg/m^3)
 %symbolic variables
 v = sym('v','real');
 
-wing_ref_area = 0.8; % inital guess for wing area (m^2)
+wing_ref_area = 0.4; % inital guess for wing area (m^2)
 weight_propulsion = 18; % inital guess for Propulsion System weight in Newtons
 Cf=  0.006; % Skin friction coefficient estimate
 RegConst = [-0.823411250229396;4.34939493516460];
@@ -79,7 +79,7 @@ prop_weight_coef = polyfit(thrust_data, weight_data, 1 );
 %% ========================= Size Aircraft ================================= %%
 % Iterative method to solve for wing_ref_area, weight_propulsion, MTOW, weight_empty
 % Note: this method is not very sophisticated and prone to error 
-weight_fuselage = 0.5*sensor+weight_fuselage; % This does NOT make sense
+
 for i = 0:1000
 
     % calculate the wingspan from the aspect ratio and wing reference area
@@ -91,13 +91,13 @@ for i = 0:1000
         weight_empty = weight_fuselage + weight_wings + weight_propulsion; %empty weight (N)
         MTOW = weight_empty + sensor .* ((sensorWeight + sensorContainer) .* g); %Max Takeoff weight (N) (pass weigh 3 oz 0.085 kg)
         % thrust = 70;
-        thrust = thrust_to_weight*MTOW; %thrust (N) (weight_empty or MTOW????)
-        req_prop_weight = (thrust*0.224809 -RegConst(1))/RegConst(2)*4.44822;
+        thrust = thrust_to_weight*MTOW; %required thrust (N) from MTOW
+        req_prop_weight = ((thrust*0.224809 -RegConst(1))/RegConst(2))*4.44822;
         err = sum(sum(abs(req_prop_weight - weight_propulsion))); %sum of absolute error
         fprintf('err %f\n',err);
 
         if err < 1e-8
-            fprintf('thrust converged after %d\n',k);
+            fprintf('thrust converged after %f\n',k);
             break
 
         end
@@ -125,21 +125,21 @@ for i = 0:1000
 end
 %Takeoff Distance: Raymer 487
 % MTOW = MTOW- (sensor * (0.141748 * g))
-mu = 0.02 
-K = 1./(pi*e*AR)
+mu = 0.02 ;
+K = 1./(pi*e*AR);
 %Kt = thrust_to_weight-mu
-Kt = thrust./MTOW-mu
-Ka = air_density./2./(MTOW./wing_ref_area).*(mu.*Cl_takeoff-CD_0-K.*Cl_takeoff.^2)
+Kt = thrust./MTOW-mu;
+Ka = air_density./2./(MTOW./wing_ref_area).*(mu.*Cl_takeoff-CD_0-K.*Cl_takeoff.^2);
 
 takeoff_dist = (1/2/g./Ka.*log((Kt+Ka.*Takeoff_velocity.^2)./Kt))*3.28084; % answer in ft converted from m
 % MTOW = MTOW+( sensor * (0.141748 * g))
 %change negative to a very large number and NaN values to a very small number
-MTOW(MTOW<= 0) = 1e6
-MTOW(isnan(MTOW)==1) = 0.1
+MTOW(MTOW<= 0) = 1e6;
+MTOW(isnan(MTOW)==1) = 0.1;
 
 %change negative to a very large number and NaN values to a very small number
-wing_ref_area(wing_ref_area<= 0) = inf
-wing_ref_area(isnan(wing_ref_area)== 1) = 0.01
+wing_ref_area(wing_ref_area<= 0) = inf;
+wing_ref_area(isnan(wing_ref_area)== 1) = 0.01;
 
 
 % %% ======================= Calculations ================================ %%
@@ -189,7 +189,7 @@ M1 = zeros(size(sensor));
 M1(t_3laps/60 < 5) = 1; % Mission 1 score 
 
 M2 = (sensor./t_3laps); % mission 2 score
-M2 = 1+M2./max(M2)
+M2 = 1+M2./max(M2);
 
 M3 = 2+(laps_10min .* sensorLength .* sensorWeight)./max(laps_10min .* sensorLength .* sensorWeight); % Mission 3 score
 GM = 6./(sensor+5); % Ground Mission Score
@@ -206,25 +206,25 @@ score = (M1 + M2 + M3+GM);
 
 % %% ========================== Plotting ================================= %%
 span_wing = span_wing/in2m
-% figure(1)
-% shading interp;
-% [ANALY2 , ANALY2] = contourf( sensor, AR, score);
-% set(ANALY2,'edgecolor','none');
+figure(1)
+shading interp;
+[ANALY2 , ANALY2] = contourf(sensor, AR, score);
+set(ANALY2,'edgecolor','none');
 
-% title('Scoring Analysis','FontSize',23);
-% 
+title('Scoring Analysis','FontSize',23);
 
-% ylabel('AR','FontSize',32,'FontWeight','bold');
-% xlabel('# Sensors','FontSize',32,'FontWeight','bold');
-% hold on 
-% set(gca,'fontsize',20)
+
+ylabel('AR','FontSize',32,'FontWeight','bold');
+xlabel('# Sensors','FontSize',32,'FontWeight','bold');
+hold on 
+set(gca,'fontsize',20)
 
 % max_score = max(max(score));
 % scatter(1, 4,250, 'ko','filled')
 
-% c = colorbar;
-% c.Label.String = 'Normalized Score';
-% c.Label.FontSize = 16
+c = colorbar;
+c.Label.String = 'Normalized Score';
+c.Label.FontSize = 16
 
 % fprintf('Max Score %.2f\n',max_score);
 % % fprintf('RAC %.2f\n', RAC(score== max_score));
@@ -239,17 +239,17 @@ span_wing = span_wing/in2m
 % fprintf('Cl %.2f\n', Cl_takeoff(score== max_score));
 
 % fprintf('RAC %.2f\n', RAC(score== max_score));
-fprintf('passengers %.2f\n', sensor(1,24));
-fprintf('span_wing [in]%.2f\n', span_wing(1,24));
-fprintf('MTOW [N]%.2f\n', MTOW(1,24));
-fprintf('EW [N]%.2f\n', MTOW(1,24)-( sensor(1,24) * (0.141748 * g)));
-fprintf('wing_ref_area [m^2]%.2f\n', wing_ref_area(1,24));
-fprintf('span_wingpan [in] %.2f\n', span_wing(1,24));
-fprintf('Chord [in] %.2f\n', span_wing(1,24)/AR(1,24));
-fprintf('AR %.2f\n', AR(1,24));
-fprintf('V %.2f\n', v_cruise(1,24));
-fprintf('Cl %.2f\n', Cl_takeoff(1,24)-delta_Cl);
-fprintf('Thrust %.2f\n', thrust(1,24));
+% fprintf('passengers %.2f\n', sensor(1,24));
+% fprintf('span_wing [in]%.2f\n', span_wing(1,24));
+% fprintf('MTOW [N]%.2f\n', MTOW(1,24));
+% fprintf('EW [N]%.2f\n', MTOW(1,24)-( sensor(1,24) * (0.141748 * g)));
+% fprintf('wing_ref_area [m^2]%.2f\n', wing_ref_area(1,24));
+% fprintf('span_wingpan [in] %.2f\n', span_wing(1,24));
+% fprintf('Chord [in] %.2f\n', span_wing(1,24)/AR(1,24));
+% fprintf('AR %.2f\n', AR(1,24));
+% fprintf('V %.2f\n', v_cruise(1,24));
+% fprintf('Cl %.2f\n', Cl_takeoff(1,24)-delta_Cl);
+% fprintf('Thrust %.2f\n', thrust(1,24));
 
 
 
@@ -262,14 +262,14 @@ fprintf('Thrust %.2f\n', thrust(1,24));
 % c.Label.String = 'Normalized Score';
 % c.Label.FontSize = 16
 
-figure
-contourf( sensor, span_wing, MTOW./wing_ref_area);
-ylabel('b_s','FontSize',20);
-xlabel('# Sensors','FontSize',20);
-hold on 
-c = colorbar;
-c.Label.String = 'Wing Loading (MTOW/Sref)';
-c.Label.FontSize = 16
+% figure
+% contourf( sensor, span_wing, MTOW./wing_ref_area);
+% ylabel('b_s','FontSize',20);
+% xlabel('# Sensors','FontSize',20);
+% hold on 
+% c = colorbar;
+% c.Label.String = 'Wing Loading (MTOW/Sref)';
+% c.Label.FontSize = 16
 
 figure
 contourf(sensorWeight,sensorLength, score);
