@@ -83,7 +83,7 @@ max_container_mass = 12; % Maximum sensor container mass in ounces (Would be bet
 
 sensor = linspace(1, n_sensors, n); % Generates vector for number of sensors carried by aircraft versus test cases
 [span_wing, sensor] = meshgrid(span_wing, sensor); % Creates matrix relating cases for each wingspan/sensor configuration
-[wing_ref_area, AR, thrust, MTOW, Cl_takeoff] = SizeAircraft(weight_fuselage, sensor, span_wing, wing_ref_area, num_wings, dens_lin_wing, RegConst, airfoil_Cl_max, delta_Cl, air_density, Takeoff_velocity, thrust_to_weight, sensor_weight, sensor_container_weight, weight_propulsion);
+[wing_ref_area, AR, thrust, MTOW, Cl_takeoff] = SizeAircraftNew(span_wing, wing_ref_area, num_wings, dens_lin_wing, weight_fuselage, weight_propulsion, sensor_weight, sensor_container_weight, thrust_to_weight, RegConst, airfoil_Cl_max, delta_Cl, air_density, Takeoff_velocity, sensor);
 
 %% ========== Takeoff ========== %%
 
