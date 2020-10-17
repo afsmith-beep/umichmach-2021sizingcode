@@ -69,7 +69,7 @@ air_density = 1.12; % Air density in Tucson, AZ
 %% ================ Payload ======================= %%
 % To meet competition criteria, minimum Length/Diameter ratio for the
 % sensor is 4 where the minimum diameter is 1 inch
-n_sensors = 14; % Maximum number of sensors that our aircraft could feasible carry
+n_sensors = 10; % Maximum number of sensors that our aircraft could feasible carry
 max_sensor_length = 12; % Maximum sensor length value to evaluate in inches
 min_sensor_length = 4; % Minimum sensor length value to evaluate in inches
 min_sensor_mass = 8; % Minimum sensor mass in ounces (Would be better to get a linear density plot instead of a guess)
@@ -77,13 +77,13 @@ max_sensor_mass = 18; % Maximum sensor mass in ounces (Would be better to get a 
 min_container_mass = 6; % Minimum sensor container mass in ounces (Would be better to get a linear density plot instead)
 max_container_mass = 12; % Maximum sensor container mass in ounces (Would be better to get a linear density model)
 
-[sensor_length,sensor_weight,sensor_container_weight] = Payload(n, n_sensors,max_sensor_length, min_sensor_length,max_sensor_mass,min_sensor_mass,min_container_mass,max_container_mass);
+[sensor_length,sensor_weight,sensor_container_weight] = Payload(n, max_sensor_length, min_sensor_length,max_sensor_mass,min_sensor_mass,min_container_mass,max_container_mass);
 
 %% ========== MTOW ========== %%
 
-sensor = linspace(1, n_sensors, n); % Generates vector for number of sensors carried by aircraft
+sensor = linspace(1, n_sensors, n); % Generates vector for number of sensors carried by aircraft versus test cases
 [span_wing, sensor] = meshgrid(span_wing, sensor); % Creates matrix relating cases for each wingspan/sensor configuration
-[wing_ref_area, AR, thrust, MTOW, Cl_takeoff] = SizeAircraft(weight_fuselage, n_sensors, span_wing, wing_ref_area, num_wings, dens_lin_wing, RegConst, airfoil_Cl_max, delta_Cl, air_density, Takeoff_velocity, thrust_to_weight, sensor_weight, sensor_container_weight, weight_propulsion)
+[wing_ref_area, AR, thrust, MTOW, Cl_takeoff] = SizeAircraft(weight_fuselage, sensor, span_wing, wing_ref_area, num_wings, dens_lin_wing, RegConst, airfoil_Cl_max, delta_Cl, air_density, Takeoff_velocity, thrust_to_weight, sensor_weight, sensor_container_weight, weight_propulsion);
 
 %% ========== Takeoff ========== %%
 
@@ -92,11 +92,11 @@ mu = 0.02; % Dynamic viscosity
 
 %% ========= Cruise Velocity ========== %%
 
-[v_cruise] = CruiseVelocity(thrust_to_weight, MTOW, air_density, wing_ref_area, CD_0, AR, span_wing, n_sensors, e, Cf)
+[v_cruise] = CruiseVelocity(thrust_to_weight, MTOW, air_density, wing_ref_area, CD_0, AR, span_wing, sensor, e, Cf);
 
 %% ========== Lap Times ========== %%
 
-[laps_10min,t_3laps] = lapTime(v_cruise,lap_length)
+[laps_10min,t_3laps] = lapTime(v_cruise,lap_length);
 
 %% ========== Realism =========== %%
 for i = 1:length(AR(:, 1))
@@ -111,4 +111,7 @@ for i = 1:length(AR(:, 1))
 end
 %% ========== Score ========== %%
 
-[score, M1, M2, M3] = Scoring(n_sensors, t_3laps, laps_10min, sensor_length, sensor_weight)
+[score, M1, M2, M3] = Scoring(sensor, t_3laps, laps_10min, sensor_length, sensor_weight);
+
+%% ========= Plotting ========== %%
+fprintf('The code has run successfully!')
