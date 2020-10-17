@@ -1,6 +1,9 @@
-function [v_cruise] = CruiseVelocity(thrust_to_weight, MTOW, v, air_density, wing_ref_area, CD_0, AR, span_wing, sensor, e, Cf)
+function [v_cruise] = CruiseVelocity(thrust_to_weight, MTOW, air_density, wing_ref_area, CD_0, AR, span_wing, sensor, e, Cf)
 %Function to solve for cruise velocity
 %Definitely needs to be touched up
+
+% Symbolic Variables
+v = sym('v','real');
 
 %Coefficients for a rough dynamic thrust curve
 T_0 = thrust_to_weight*MTOW*0.7;

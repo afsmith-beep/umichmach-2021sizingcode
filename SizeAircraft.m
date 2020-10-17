@@ -28,14 +28,5 @@ for i = 0:1000
 
     wing_ref_area = wing_ref_area + 0.1*(wing_area_req - wing_ref_area);  %m^2
 end
-for i = 1:length(AR(:, 1))
-    for j = 1:length(AR(i))
-        if AR(i,j) < 4
-            AR(i,j) = NaN;
-            MTOW(i,j) = NaN;
-            wing_ref_area(i,j) = NaN;
-            thrust(i,j) = NaN;
-        end
-    end
-end
+
 

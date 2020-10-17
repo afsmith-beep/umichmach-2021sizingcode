@@ -64,8 +64,7 @@ Cf = 0.006; % Coefficient of skin friction (Need a serious evaluation over how f
 lap_length = 4000 * ft2m; % Approximate course length in feet converted to meters
 air_density = 1.12; % Air density in Tucson, AZ
 
-% Symbolic Variables
-v = sym('v','real');
+
 
 %% ================ Payload ======================= %%
 % To meet competition criteria, minimum Length/Diameter ratio for the
@@ -93,12 +92,23 @@ mu = 0.02; % Dynamic viscosity
 
 %% ========= Cruise Velocity ========== %%
 
-[v_cruise] = CruiseVelocity(thrust_to_weight, MTOW, v, air_density, wing_ref_area, CD_0, AR, span_wing, n_sensors, e, Cf)
+[v_cruise] = CruiseVelocity(thrust_to_weight, MTOW, air_density, wing_ref_area, CD_0, AR, span_wing, n_sensors, e, Cf)
 
 %% ========== Lap Times ========== %%
 
 [laps_10min,t_3laps] = lapTime(v_cruise,lap_length)
 
+%% ========== Realism =========== %%
+for i = 1:length(AR(:, 1))
+    for j = 1:length(AR(i))
+        if AR(i,j) < 4
+            AR(i,j) = NaN;
+            MTOW(i,j) = NaN;
+            wing_ref_area(i,j) = NaN;
+            thrust(i,j) = NaN;
+        end
+    end
+end
 %% ========== Score ========== %%
 
-[score, M1, M2, M3] = Scoring(sensor, t_3laps, laps_10min, sensorLength, sensorWeight)
+[score, M1, M2, M3] = Scoring(n_sensors, t_3laps, laps_10min, sensor_length, sensor_weight)
