@@ -54,8 +54,8 @@ RegConst = [-0.823411250229396;4.34939493516460]; % Regression constants from pr
 thrust_to_weight = 0.6; % Desired thrust to weight ratio
 Takeoff_velocity = 12; % Desired takeoff velocity in m/s
 CD_0 = 0.06; % Zero-lift drag coefficient guess (CFD model approximation would be better)
-taperR = 1.0; % Oswald efficiency factor (Need better method of approximating)
-mu = 0.02;  % Takeoff distance constant
+taperR = 1.0; % Taper ratio used to calculate Oswald efficiency factor
+mu = 0.02;  % Dynamic viscosity
 airfoil_Cl_max = 1.46; % Maximum lift coefficient for chosen BOE103
 delta_Cl = 0.6*cosd(-10); % delta cl due to flaps: Raymer 279, 0.6 = Ratio of flapped area and total area
 Cf = 0.006; % Coefficient of skin friction (Need a serious evaluation over how feasible this is)
@@ -87,7 +87,6 @@ sensor = linspace(1, n_sensors, n); % Generates vector for number of sensors car
 
 %% ========== Takeoff ========== %%
 
-mu = 0.02; % Dynamic viscosity 
 [wing_ref_area,takeoff_dist,e] = Takeoff(mu,taperR,AR,MTOW,thrust,air_density,wing_ref_area,Cl_takeoff,CD_0,g,Takeoff_velocity)
 
 %% ========= Cruise Velocity ========== %%
@@ -115,3 +114,42 @@ end
 
 %% ========= Plotting ========== %%
 fprintf('The code has run successfully!')
+
+
+% Score as a function of AR and sensor count
+figure(1)
+shading interp;
+[ANALY2 , ANALY2] = contourf(sensor, AR, score);
+set(ANALY2,'edgecolor','none');
+title('Scoring Analysis','FontSize',23);
+ylabel('AR','FontSize',32,'FontWeight','bold');
+xlabel('# Sensors','FontSize',32,'FontWeight','bold');
+hold on 
+set(gca,'fontsize',20)
+c = colorbar;
+c.Label.String = 'Normalized Score';
+c.Label.FontSize = 16
+
+% Score as a function of sensor weight and length
+figure(2)
+contourf(sensor_weight,sensor_length, score);
+ylabel('Sensor Length (m)','FontSize',20);
+xlabel('Sensor Weight (N)','FontSize',20);
+hold on
+c = colorbar;
+c.Label.String = 'Normalized Score';
+c.Label.FontSize = 16
+
+% Score as a function of sensor length and sensor number
+sensor_length_matrix = zeros(size(sensor));
+for p = 1:n
+    sensor_length_matrix(p,:) = sensor_length;
+end
+figure(3)
+contourf(sensor, sensor_length_matrix, score);
+ylabel('Sensor Length (m)','FontSize',20);
+xlabel('# Sensors','FontSize',20);
+hold on
+c = colorbar;
+c.Label.String = 'Normalized Score';
+c.Label.FontSize = 16
