@@ -1,7 +1,7 @@
-function [wing_ref_area, AR, thrust, MTOW] = SizeAircraft(weight_fuselage, sensor, span_wing, wing_ref_area, num_wings, dens_lin_wing, weight_empty, RegConst, airfoil_Cl_max, delta_Cl, air_density, Takeoff_velocity, thrust_to_weight, MTOW)
+function [wing_ref_area, AR, thrust, MTOW, Cl_takeoff] = SizeAircraft(weight_fuselage, n_sensor, span_wing, wing_ref_area, num_wings, dens_lin_wing, RegConst, airfoil_Cl_max, delta_Cl, air_density, Takeoff_velocity, thrust_to_weight, sensorWeight, sensorContainerWeight, weight_propulsion)
 % Iterative method to solve for wing_ref_area, weight_propulsion, MTOW, weight_empty
 % Note: this method is not very sophisticated and prone to error 
-weight_fuselage = 0.5*sensor+weight_fuselage; % This does NOT make sense
+
 for i = 0:1000
 
     % calculate the wingspan from the aspect ratio and wing reference area
@@ -10,7 +10,7 @@ for i = 0:1000
     % wing weight in Newtons 
     weight_wings = num_wings*(span_wing*dens_lin_wing);
 
-    [MTOW, thrust] = Propulsion(MTOW, weight_wings, weight_fuselage, RegConst, AR, thrust_to_weight);
+    [MTOW, thrust] = Propulsion (weight_wings, weight_fuselage, RegConst, thrust_to_weight, sensorWeight, sensorContainerWeight, n_sensor, weight_propulsion)
     
     Cl_stall = airfoil_Cl_max * AR ./ (AR + 2); % finite wing correction 
     Cl_takeoff = Cl_stall/(1.1^2)+delta_Cl; % equation from 481

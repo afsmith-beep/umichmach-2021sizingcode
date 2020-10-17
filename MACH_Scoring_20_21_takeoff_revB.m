@@ -31,7 +31,7 @@ ft2m = in2m * 12; %feet to meters
 
 %% =========================== Varibles ===================================== %%
 
-n = 30; % Number of test cases 
+n = 10; % Number of test cases 
 span_wing = linspace(54, 54, n)*in2m; % Generates vector of wingspans
 sensor = linspace(1, 10, n); % Generates vector for number of sensors carried by aircraft
 [span_wing, sensor] = meshgrid(span_wing, sensor); % Creates matrix relating cases for each wingspan/sensor configuration
@@ -47,7 +47,7 @@ weight_fuselage = weight_fuselage_intial; % Newtons
 dens_lin_wing = (0.2875 * 0.0283495 * g / in2m);  % density N/m
 
 thrust_to_weight = 0.6; % Desired aircraft thrust to weight ratio
-Takeoff_velocity = 14; % Desired takeoff velocity in m/s
+Takeoff_velocity = 12; % Desired takeoff velocity in m/s
 CD_0 = 0.06; % Zero lift drag coefficient 
 e = 0.80; % oswald efficiency
 lap_length = 4000; % Contest course length in ft
@@ -90,7 +90,6 @@ for i = 0:1000
     for k = 0:100
         weight_empty = weight_fuselage + weight_wings + weight_propulsion; %empty weight (N)
         MTOW = weight_empty + sensor .* ((sensorWeight + sensorContainer) .* g); %Max Takeoff weight (N) (pass weigh 3 oz 0.085 kg)
-        % thrust = 70;
         thrust = thrust_to_weight*MTOW; %required thrust (N) from MTOW
         req_prop_weight = ((thrust*0.224809 -RegConst(1))/RegConst(2))*4.44822;
         err = sum(sum(abs(req_prop_weight - weight_propulsion))); %sum of absolute error
@@ -124,10 +123,9 @@ for i = 0:1000
     wing_ref_area = wing_ref_area + 0.1*(wing_area_req - wing_ref_area);  %m^2
 end
 %Takeoff Distance: Raymer 487
-% MTOW = MTOW- (sensor * (0.141748 * g))
+
 mu = 0.02 ;
 K = 1./(pi*e*AR);
-%Kt = thrust_to_weight-mu
 Kt = thrust./MTOW-mu;
 Ka = air_density./2./(MTOW./wing_ref_area).*(mu.*Cl_takeoff-CD_0-K.*Cl_takeoff.^2);
 
@@ -153,7 +151,6 @@ T_2 = -0.015;
 v_cruise = zeros(size(sensor));
 
 for j = [1:size(sensor,1)]
-    MTOW=MTOW-1.39;
     j;
     for i = [1:size(span_wing,2)]
         v_cruise(j,i) = double(max(vpasolve(v.^2*T_2+v*T_1+T_0(j,i) ==...

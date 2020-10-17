@@ -20,7 +20,7 @@ sensorWeight = linspace(min_sensor_mass,max_sensor_mass,n); % Sensor weight test
 sensorWeight = sensorWeight * 0.0283495; % Sensor mass in kg
 sensorWeight = sensorWeight * kg2N; % Convert sensor mass to Newtons
 sensorContainerWeight = linspace(min_container_mass,max_container_mass,n) * oz2kg; % Sensor container mass in kg
-sensorContainerWeight = sensorContainerWeight * kg2N;
+sensorContainerWeight = sensorContainerWeight * kg2N; % Sensor container weight in newtons
 
 end
 

@@ -32,23 +32,17 @@ kg2N = 9.81; % Convert kg to newtons
 oz2kg = 0.0283495; % Convert ounces to kg
 
 %% =========================== Variables and Constants ===================================== %%
-n = 10; % Number of test cases to run
+n = 30; % Number of test cases to run
 g = 9.81; % Accleration due to gravity in m/s^2
 
 % Wing Properties
-span_wing = linspace(54, 54, n)*in2m; % Wingspan vector converted from inches to meters. 2021 competition states max 5ft wingspan. 54 inches accounts for 6 inch fuselage thickness
+span_wing = 54 * in2m; % Wingspan converted from inches to meters. 2021 competition states max 5ft wingspan. 54 inches accounts for 6 inch fuselage thickness
 num_wings = 1; % Number of wings
-wing_ref_area = 0.4; % inital guess for wing area (m^2)
-dens_lin_wing = (0.2875 * 0.0283495 * g / in2m);  % density N/m
 
 % Fuselage Properties
 weight_fuselage_initial = 23; % Empty fuselage weight guess in Newtons (Does not include wings, payloads, or propulsion system)
 weight_fuselage = weight_fuselage_initial; % Sets up place holder for fuselage weight iterations
 weight_propulsion = 18; % inital guess for Propulsion System weight in Newtons
-
-% Proplusion Properties
-weight_propulsion = 18; % inital guess for Propulsion System weight in Newtons
-RegConst = [-0.823411250229396;4.34939493516460]; % Regression constants from proplusion trade study
 
 % Desired and Approximated Aerodynamic Properties
 thrust_to_weight = 0.6; % Desired thrust to weight ratio
@@ -78,22 +72,20 @@ max_sensor_mass = 18; % Maximum sensor mass in ounces (Would be better to get a 
 min_container_mass = 6; % Minimum sensor container mass in ounces (Would be better to get a linear density plot instead)
 max_container_mass = 12; % Maximum sensor container mass in ounces (Would be better to get a linear density model)
 
-[sensor_length,sensor_weight,sensor_container_weight] = Payload(n, n_sensors,max_sensor_length, min_sensor_length,max_sensor_mass,min_sensor_mass,min_container_mass,max_container_mass);
+[sensor_length,sensor_weight,sensor_container_mass] = Payload(n, n_sensors,max_sensor_length, min_sensor_length,max_sensor_mass,min_sensor_mass,min_container_mass,max_container_mass);
 
 %% ========== MTOW ========== %%
 
-sensor = linspace(1, n_sensors, n); % Generates vector for number of sensors carried by aircraft
-[span_wing, sensor] = meshgrid(span_wing, sensor); % Creates matrix relating cases for each wingspan/sensor configuration
-[wing_ref_area, AR, thrust, MTOW, Cl_takeoff] = SizeAircraft(weight_fuselage, n_sensors, span_wing, wing_ref_area, num_wings, dens_lin_wing, RegConst, airfoil_Cl_max, delta_Cl, air_density, Takeoff_velocity, thrust_to_weight, sensor_weight, sensor_container_weight, weight_propulsion)
+[wing_ref_area, AR, thrust, MTOW] = SizeAircraft(weight_fuselage, sensor, span_wing, wing_ref_area, num_wings, dens_lin_wing, weight_empty, RegConst, airfoil_Cl_max, delta_Cl, air_density, Takeoff_velocity, thrust_to_weight, MTOW, sensorWeight, sensorContainerWeight)
 
 %% ========== Takeoff ========== %%
 
 mu = 0.02; % Dynamic viscosity 
-[wing_ref_area,takeoff_dist] = Takeoff(mu,e,AR,MTOW,thrust,air_density,wing_ref_area,Cl_takeoff,CD_0,g,Takeoff_velocity)
+[wing_ref_area,takeoff_dist] = Takeoff(mu,e,AR,MTOW,thrust,air_density,wing_ref_area,Cl_takeoff,CD_0,g)
 
 %% ========= Cruise Velocity ========== %%
 
-[v_cruise] = CruiseVelocity(thrust_to_weight, MTOW, v, air_density, wing_ref_area, CD_0, AR, span_wing, n_sensors, e, Cf)
+[v_cruise] = CruiseVelocity(thrust_to_weight, MTOW, v, air_density, wing_ref_area, CD_0, AR, span_wing)
 
 %% ========== Lap Times ========== %%
 
