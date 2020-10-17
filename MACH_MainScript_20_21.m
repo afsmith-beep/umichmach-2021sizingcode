@@ -54,7 +54,7 @@ RegConst = [-0.823411250229396;4.34939493516460]; % Regression constants from pr
 thrust_to_weight = 0.6; % Desired thrust to weight ratio
 Takeoff_velocity = 12; % Desired takeoff velocity in m/s
 CD_0 = 0.06; % Zero-lift drag coefficient guess (CFD model approximation would be better)
-e = 0.80; % Oswald efficiency factor (Need better method of approximating)
+taperR = 1.0; % Oswald efficiency factor (Need better method of approximating)
 mu = 0.02;  % Takeoff distance constant
 airfoil_Cl_max = 1.46; % Maximum lift coefficient for chosen BOE103
 delta_Cl = 0.6*cosd(-10); % delta cl due to flaps: Raymer 279, 0.6 = Ratio of flapped area and total area
@@ -88,7 +88,7 @@ sensor = linspace(1, n_sensors, n); % Generates vector for number of sensors car
 %% ========== Takeoff ========== %%
 
 mu = 0.02; % Dynamic viscosity 
-[wing_ref_area,takeoff_dist] = Takeoff(mu,e,AR,MTOW,thrust,air_density,wing_ref_area,Cl_takeoff,CD_0,g,Takeoff_velocity)
+[wing_ref_area,takeoff_dist,e] = Takeoff(mu,taperR,AR,MTOW,thrust,air_density,wing_ref_area,Cl_takeoff,CD_0,g,Takeoff_velocity)
 
 %% ========= Cruise Velocity ========== %%
 

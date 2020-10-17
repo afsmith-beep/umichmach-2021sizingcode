@@ -1,9 +1,12 @@
-function [wing_ref_area,takeoff_dist] = Takeoff(mu,e,AR,MTOW,thrust,air_density,wing_ref_area,Cl_takeoff,CD_0,g,Takeoff_velocity)
+function [wing_ref_area,takeoff_dist,e] = Takeoff(mu,taperR,AR,MTOW,thrust,air_density,wing_ref_area,Cl_takeoff,CD_0,g,Takeoff_velocity)
 %UNTITLED6 Summary of this function goes here
 %   Detailed explanation goes here
 %Takeoff Distance: Raymer 487
 
-K = 1./(pi*e*AR);
+e = 0.9./(1+(0.0524*taperR^4-0.15*taperR^3+0.1659*taperR^2-0.0706*taperR+...
+    0.0119).*AR); % Oswald Efficiency Factor
+
+K = 1./(pi*e.*AR);
 Kt = thrust./MTOW-mu;
 Ka = air_density./2./(MTOW./wing_ref_area).*(mu.*Cl_takeoff-CD_0-K.*Cl_takeoff.^2);
 
