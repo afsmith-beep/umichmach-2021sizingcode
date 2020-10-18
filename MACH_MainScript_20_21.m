@@ -71,13 +71,25 @@ air_density = 1.12; % Air density in Tucson, AZ
 % sensor is 4 where the minimum diameter is 1 inch
 n_sensors = 10; % Maximum number of sensors that our aircraft could feasible carry
 max_sensor_length = 12; % Maximum sensor length value to evaluate in inches
-min_sensor_length = 4; % Minimum sensor length value to evaluate in inches
-min_sensor_mass = 8; % Minimum sensor mass in ounces (Would be better to get a linear density plot instead of a guess)
-max_sensor_mass = 18; % Maximum sensor mass in ounces (Would be better to get a linear density plot instead)
-min_container_mass = 6; % Minimum sensor container mass in ounces (Would be better to get a linear density plot instead)
-max_container_mass = 12; % Maximum sensor container mass in ounces (Would be better to get a linear density model)
+min_sensor_length = 6; % Minimum sensor length value to evaluate in inches
+min_sensor_length = min_sensor_length * in2m;
+max_sensor_length = max_sensor_length * in2m;
+% min_sensor_mass = 8; % Minimum sensor mass in ounces (Would be better to get a linear density plot instead of a guess)
+% max_sensor_mass = 18; % Maximum sensor mass in ounces (Would be better to get a linear density plot instead)
+min_container_mass = min_sensor_length * 0.0016129 * 2000; % Minimum sensor container mass in kg based on linear density model 2000 kg/m3 carbon fiber
+max_container_mass = max_sensor_length * 0.0016129 * 2000; % Maximum sensor container mass in kg based on linear density model 2000 kg/m3 carbon fiber 
 
-[sensor_length,sensor_weight,sensor_container_weight] = Payload(n, max_sensor_length, min_sensor_length,max_sensor_mass,min_sensor_mass,min_container_mass,max_container_mass);
+min_sensor_mass = .220 + (min_sensor_length * pi * (0.03175.^2 - 0.028575.^2) * 1530);
+max_sensor_mass = .220 + (max_sensor_length * pi * (0.03175.^2 - 0.028575.^2) * 1530);% 1530 references density of ABS in kg/m3
+min_sensor_mass = min_sensor_mass * kg2N; % Not actually mass, it's N
+max_sensor_mass = max_sensor_mass * kg2N; % Not actually mass, it's N
+min_container_mass = min_container_mass * kg2N; % Not actually mass, it's N
+max_container_mass = max_container_mass * kg2N; % Not actually mass, it's N
+sensor_length = linspace(6,12,n);
+sensor_weight = linspace(min_sensor_mass, max_sensor_mass, n);
+sensor_container_weight = linspace(min_container_mass, max_container_mass, n);
+
+% [sensor_length,sensor_weight,sensor_container_weight] = Payload(n, max_sensor_length, min_sensor_length,max_sensor_mass,min_sensor_mass,min_container_mass,max_container_mass);
 
 %% ========== MTOW ========== %%
 
