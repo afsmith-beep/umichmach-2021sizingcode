@@ -32,7 +32,7 @@ kg2N = 9.81; % Convert kg to newtons
 oz2kg = 0.0283495; % Convert ounces to kg
 
 %% =========================== Variables and Constants ===================================== %%
-n = 10; % Number of test cases to run
+n = 6; % Number of test cases to run
 g = 9.81; % Accleration due to gravity in m/s^2
 
 % Wing Properties
@@ -69,7 +69,7 @@ air_density = 1.12; % Air density in Tucson, AZ
 %% ================ Payload ======================= %%
 % To meet competition criteria, minimum Length/Diameter ratio for the
 % sensor is 4 where the minimum diameter is 1 inch
-n_sensors = 10; % Maximum number of sensors that our aircraft could feasible carry
+n_sensors = 6; % Maximum number of sensors that our aircraft could feasible carry
 max_sensor_length = 12; % Maximum sensor length value to evaluate in inches
 min_sensor_length = 6; % Minimum sensor length value to evaluate in inches
 min_sensor_length = min_sensor_length * in2m;
@@ -95,7 +95,7 @@ sensor_container_weight = linspace(min_container_mass, max_container_mass, n);
 
 sensor = linspace(1, n_sensors, n); % Generates vector for number of sensors carried by aircraft versus test cases
 [span_wing, sensor] = meshgrid(span_wing, sensor); % Creates matrix relating cases for each wingspan/sensor configuration
-[wing_ref_area, AR, thrust, MTOW, Cl_takeoff] = SizeAircraftNew(span_wing, wing_ref_area, num_wings, dens_lin_wing, weight_fuselage, weight_propulsion, sensor_weight, sensor_container_weight, thrust_to_weight, RegConst, airfoil_Cl_max, delta_Cl, air_density, Takeoff_velocity, sensor);
+[wing_ref_area, AR, thrust, MTOW, Cl_takeoff, weight_propulsion] = SizeAircraftNew(span_wing, wing_ref_area, num_wings, dens_lin_wing, weight_fuselage, weight_propulsion, sensor_weight, sensor_container_weight, thrust_to_weight, RegConst, airfoil_Cl_max, delta_Cl, air_density, Takeoff_velocity, sensor);
 
 %% ========== Takeoff ========== %%
 
@@ -110,8 +110,8 @@ sensor = linspace(1, n_sensors, n); % Generates vector for number of sensors car
 [laps_10min,t_3laps] = lapTime(v_cruise,lap_length);
 
 %% ========== Realism =========== %%
-for i = 1:length(AR(:, 1))
-    for j = 1:length(AR(i))
+for i = 1:n
+    for j = 1:n
         if AR(i,j) < 4
             AR(i,j) = NaN;
             MTOW(i,j) = NaN;

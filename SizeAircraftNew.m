@@ -1,4 +1,4 @@
-function [wing_ref_area, AR, thrust, MTOW, Cl_takeoff] = SizeAircraftNew(span_wing, wing_ref_area, num_wings, dens_lin_wing, weight_fuselage, weight_propulsion, sensorWeight, sensorContainerWeight, thrust_to_weight, RegConst, airfoil_Cl_max, delta_Cl, air_density, Takeoff_velocity, sensor)
+function [wing_ref_area, AR, thrust, MTOW, Cl_takeoff, weight_propulsion] = SizeAircraftNew(span_wing, wing_ref_area, num_wings, dens_lin_wing, weight_fuselage, weight_propulsion, sensorWeight, sensorContainerWeight, thrust_to_weight, RegConst, airfoil_Cl_max, delta_Cl, air_density, Takeoff_velocity, sensor)
 %UNTITLED8 Summary of this function goes here
 %   Detailed explanation goes here
 for i = 0:1000
