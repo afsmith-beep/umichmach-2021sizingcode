@@ -133,7 +133,7 @@ figure(1)
 shading interp;
 [ANALY2 , ANALY2] = contourf(sensor, AR, score);
 set(ANALY2,'edgecolor','none');
-title('Scoring Analysis','FontSize',23);
+title('Aspect Ratio and Sensor Analysis','FontSize',20);
 ylabel('AR','FontSize',32,'FontWeight','bold');
 xlabel('# Sensors','FontSize',32,'FontWeight','bold');
 hold on 
@@ -147,6 +147,7 @@ figure(2)
 contourf(sensor_weight,sensor_length, score);
 ylabel('Sensor Length (m)','FontSize',20);
 xlabel('Sensor Weight (N)','FontSize',20);
+title('Sensor Design Analysis','FontSize',20);
 hold on
 c = colorbar;
 c.Label.String = 'Normalized Score';
@@ -161,6 +162,7 @@ figure(3)
 contourf(sensor, sensor_length_matrix, score);
 ylabel('Sensor Length (m)','FontSize',20);
 xlabel('# Sensors','FontSize',20);
+title('Sensor Quantity Analysis','FontSize',20);
 hold on
 c = colorbar;
 c.Label.String = 'Normalized Score';
