@@ -52,7 +52,7 @@ RegConst = [-0.823411250229396;4.34939493516460]; % Regression constants from pr
 
 % Desired and Approximated Aerodynamic Properties
 thrust_to_weight = 0.6; % Desired thrust to weight ratio
-Takeoff_velocity = 12; % Desired takeoff velocity in m/s
+Takeoff_velocity = 15; % Desired takeoff velocity in m/s
 CD_0 = 0.06; % Zero-lift drag coefficient guess (CFD model approximation would be better)
 taperR = 1.0; % Taper ratio used to calculate Oswald efficiency factor
 mu = 0.02;  % Dynamic viscosity
@@ -70,8 +70,8 @@ air_density = 1.12; % Air density in Tucson, AZ
 % To meet competition criteria, minimum Length/Diameter ratio for the
 % sensor is 4 where the minimum diameter is 1 inch
 n_sensors = 6; % Maximum number of sensors that our aircraft could feasible carry
-max_sensor_length = 12; % Maximum sensor length value to evaluate in inches
-min_sensor_length = 6; % Minimum sensor length value to evaluate in inches
+max_sensor_length = 15; % Maximum sensor length value to evaluate in inches
+min_sensor_length = 9; % Minimum sensor length value to evaluate in inches
 min_sensor_length = min_sensor_length * in2m;
 max_sensor_length = max_sensor_length * in2m;
 % min_sensor_mass = 8; % Minimum sensor mass in ounces (Would be better to get a linear density plot instead of a guess)

@@ -29,7 +29,7 @@ for i = 0:1000
     
     Cl_stall = airfoil_Cl_max * AR ./ (AR + 2); % finite wing correction 
     Cl_takeoff = Cl_stall/(1.1^2)+delta_Cl; % equation from 481
-    wing_area_req = 2*weight_empty./(Cl_takeoff .* air_density * (Takeoff_velocity^2)); %required wing area
+    wing_area_req = 2*MTOW./(Cl_takeoff .* air_density * (Takeoff_velocity^2)); %required wing area
 
 
     err_wing_ref_area = sum(sum(abs(wing_ref_area - wing_area_req)));
