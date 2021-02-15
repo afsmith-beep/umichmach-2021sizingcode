@@ -32,7 +32,7 @@ kg2N = 9.81; % Convert kg to newtons
 oz2kg = 0.0283495; % Convert ounces to kg
 
 %% =========================== Variables and Constants ===================================== %%
-n = 6; % Number of test cases to run
+n = 60; % Number of test cases to run
 g = 9.81; % Accleration due to gravity in m/s^2
 
 % Wing Properties
@@ -70,8 +70,8 @@ air_density = 1.12; % Air density in Tucson, AZ
 % To meet competition criteria, minimum Length/Diameter ratio for the
 % sensor is 4 where the minimum diameter is 1 inch
 n_sensors = 6; % Maximum number of sensors that our aircraft could feasible carry
-max_sensor_length = 15; % Maximum sensor length value to evaluate in inches
-min_sensor_length = 9; % Minimum sensor length value to evaluate in inches
+max_sensor_length = 24; % Maximum sensor length value to evaluate in inches
+min_sensor_length = 8; % Minimum sensor length value to evaluate in inches
 min_sensor_length = min_sensor_length * in2m;
 max_sensor_length = max_sensor_length * in2m;
 % min_sensor_mass = 8; % Minimum sensor mass in ounces (Would be better to get a linear density plot instead of a guess)
